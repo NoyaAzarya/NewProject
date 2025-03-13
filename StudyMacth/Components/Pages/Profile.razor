@@ -1,0 +1,109 @@
+﻿@using ClassLibrary5
+@inject NavigationManager Navigation
+@inject UserService UserService
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedBrowserStorage Storage
+@inject HttpClient Http
+
+@page "/profile"
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        direction: rtl;
+        text-align: right;
+        background-color: #f8f9fa;
+    }
+
+    .profile-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .profile-header {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .edit-button {
+        display: inline-block;
+        padding: 10px 25px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+        background: #007bff;
+        border: none;
+        border-radius: 30px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    .edit-button:hover {
+        background: #0056b3;
+    }
+
+    .register-link {
+        font-size: 1.1rem;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .register-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="profile-container">
+    <h3 class="profile-header">פרופיל משתמש</h3>
+
+    @if (user == null)
+    {
+        <p class="profile-info">לא קיים משתמש רשום. <a href="/register" class="register-link">לחץ כאן כדי להירשם</a></p>
+    }
+    else
+    {
+        <div>
+            <h4 class="profile-info">@user.FirstName @user.LastName</h4>
+            <p class="profile-info"><strong>אימייל:</strong> @user.Email</p>
+            <p class="profile-info"><strong>תפקיד:</strong> @user.Role</p>
+            <button class="edit-button" @onclick="EditProfile">ערוך פרופיל</button>
+        </div>
+    }
+</div>
+
+@code {
+    private User? user;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var UserId = await Storage.GetAsync<int>("UserId");
+
+        if (UserId.Success)
+        {
+            user = await Http.GetFromJsonAsync<User>($"http://localhost:5069/api/users/{UserId.Value}");
+        }
+        else
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+
+    private void EditProfile()
+    {
+        Navigation.NavigateTo("/edit-profile");
+    }
+}

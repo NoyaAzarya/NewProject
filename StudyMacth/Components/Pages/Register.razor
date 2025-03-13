@@ -1,0 +1,128 @@
+﻿@using ClassLibrary5
+@inject NavigationManager Navigation
+@inject UserService UserService
+
+@page "/register"
+@layout MainLayout
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        direction: rtl;
+        text-align: right;
+        background-color: #f8f9fa;
+    }
+
+    .register-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-header {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-register {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+        background: #007bff;
+        border: none;
+        border-radius: 30px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    .btn-register:hover {
+        background: #0056b3;
+    }
+
+    .login-link {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 1.1rem;
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .login-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="register-container">
+    <h3 class="register-header">הרשמה</h3>
+
+    <label class="form-label">שם פרטי:</label>
+    <input @bind="firstName" class="form-control" placeholder="הזן שם פרטי" />
+
+    <label class="form-label">שם משפחה:</label>
+    <input @bind="lastName" class="form-control" placeholder="הזן שם משפחה" />
+
+    <label class="form-label">אימייל:</label>
+    <input @bind="email" class="form-control" placeholder="הזן אימייל" type="email" />
+
+    <label class="form-label">סיסמה:</label>
+    <input @bind="password_hash" class="form-control" placeholder="הזן סיסמה" type="password" />
+
+    <label class="form-label">תפקיד:</label>
+    <select @bind="role" class="form-control">
+        <option>תלמיד</option>
+        <option>מורה</option>
+    </select>
+
+    <button class="btn-register" @onclick="RegisterUser">הירשם</button>
+
+    <a href="/login" class="login-link">כבר יש לך חשבון? התחבר כאן</a>
+</div>
+
+@code {
+    private string firstName = "";
+    private string lastName = "";
+    private string email = "";
+    private string password_hash = "";
+    private string role = "תלמיד";
+
+    private void RegisterUser()
+    {
+        User newUser = new User
+            {
+                
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Password = password_hash,
+                Role = role
+                
+            };
+
+        // Future implementation: Send newUser to the backend for registration ✅
+        Navigation.NavigateTo("/profile"); // ✅ Redirect to profile after registration
+    }
+}

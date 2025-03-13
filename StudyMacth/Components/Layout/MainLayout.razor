@@ -1,0 +1,171 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<style>
+    /* Global Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #eef1f7;
+        margin: 0;
+        direction: rtl;
+    }
+
+    /* Sidebar Styling */
+    .custom-sidebar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 250px;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .sidebar-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Navigation Links */
+    .nav-link {
+        display: flex;
+        align-items: center;
+        width: 90%;
+        margin: 8px 0;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 30px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+    .nav-icon {
+        margin-left: 12px;
+        font-size: 1.3rem;
+    }
+
+    /* Content Styling */
+    .page-content {
+        margin-right: 260px;
+        padding: 40px;
+        width: calc(100% - 260px);
+        transition: margin-right 0.3s ease-in-out;
+    }
+
+    .page-header {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #1e3c72;
+        margin-bottom: 20px;
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+        position: absolute;
+        left: -35px;
+        top: 20px;
+        background: #2a5298;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .toggle-btn:hover {
+            background: #1e3c72;
+        }
+
+    /* Collapsed Sidebar */
+    .collapsed {
+        width: 60px;
+    }
+
+        .collapsed .nav-link {
+            justify-content: center;
+        }
+
+            .collapsed .nav-link span {
+                display: none;
+            }
+
+</style>
+
+<!-- Sidebar -->
+<div class="custom-sidebar" id="sidebar">
+    <div class="sidebar-logo">StudyMatch</div>
+
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <a class="nav-link @(Navigation.Uri.Contains("dashboard") ? "active" : "")" href="/dashboard">
+        <i class="nav-icon fas fa-chart-line"></i><span> לוח מחוונים</span>
+    </a>
+
+    <a class="nav-link @(Navigation.Uri.Contains("login") ? "active" : "")" href="/login">
+        <i class="nav-icon fas fa-sign-in-alt"></i><span> התחברות</span>
+    </a>
+
+    <a class="nav-link @(Navigation.Uri.Contains("register") ? "active" : "")" href="/register">
+        <i class="nav-icon fas fa-user-plus"></i><span> הרשמה</span>
+    </a>
+
+    <a class="nav-link @(Navigation.Uri.Contains("main") ? "active" : "")" href="/main">
+        <i class="nav-icon fas fa-book"></i><span> עמוד ראשי</span>
+    </a>
+
+    <a class="nav-link @(Navigation.Uri.Contains("settings") ? "active" : "")" href="/settings">
+        <i class="nav-icon fas fa-cog"></i><span> הגדרות</span>
+    </a>
+
+    <a class="nav-link @(Navigation.Uri.Contains("profile") ? "active" : "")" href="/profile">
+        <i class="nav-icon fas fa-user"></i><span> פרופיל</span>
+    </a>
+</div>
+
+<!-- Page Content -->
+<div class="page-content">
+    <h1 class="page-header">StudyMatch</h1>
+    @Body
+</div>
+
+<!-- Sidebar Toggle Script -->
+<script>
+    function toggleSidebar() {
+        let sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+    }
+</script>
+
+<!-- FontAwesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

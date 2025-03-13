@@ -1,0 +1,204 @@
+﻿@using ClassLibrary5
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject UserService userService
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage Storage
+
+@page "/login"
+@layout MainLayout
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        direction: rtl;
+        text-align: right;
+        background-color: #f8f9fa;
+    }
+
+    .login-container {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .login-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .login-message {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .login-message a {
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .login-message a:hover {
+        text-decoration: underline;
+    }
+
+    .login-form {
+        text-align: right;
+    }
+
+    .login-form label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .login-input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .login-button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+        background: #007bff;
+        border: none;
+        border-radius: 30px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    .login-button:hover {
+        background: #0056b3;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 1rem;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .welcome-message {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 10px;
+    }
+
+    .logout-button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+        background: #dc3545;
+        border: none;
+        border-radius: 30px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    .logout-button:hover {
+        background: #b52b38;
+    }
+</style>
+
+<div class="login-container">
+    <h2 class="login-title">ברוכים הבאים</h2>
+
+    @if (user == null)
+    {
+        <p class="login-message">אין לך חשבון? <a href="/register">הרשם כאן</a></p>
+
+        <div class="login-form">
+            <label for="email">אימייל</label>
+            <input id="email" @bind="email" class="login-input" type="email" placeholder="הכנס את האימייל שלך" />
+
+            <label for="password">סיסמה</label>
+            <input id="password" @bind="password" class="login-input" type="password" placeholder="********" />
+
+            <button @onclick="async () => await Login()" class="login-button">התחבר</button>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <p class="error-message">@errorMessage</p>
+            }
+        </div>
+    }
+    else
+    {
+        <h3 class="welcome-message">ברוך הבא, @user.FirstName!</h3>
+        <p><strong>מספר משתמש:</strong> @user.UserId</p>
+        <p><strong>שם פרטי:</strong> @user.FirstName</p>
+        <p><strong>שם משפחה:</strong> @user.LastName</p>
+        <p><strong>אימייל:</strong> @user.Email</p>
+        <p><strong>תפקיד:</strong> @user.Role</p>
+        <button @onclick="Logout" class="logout-button">התנתק</button>
+    }
+</div>
+
+@code {
+    private User? user;
+    private string email = "";
+    private string password = "";
+    private string errorMessage = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var UserId = await Storage.GetAsync<int>("UserId");
+
+        if (UserId.Success)
+        {
+            user = await Http.GetFromJsonAsync<User>($"http://localhost:5069/api/users/{UserId.Value}");
+        }
+    }
+
+    private async Task Login()
+    {
+        Console.WriteLine("🔹 Sending Login Request...");
+        errorMessage = "מתחבר...";
+        var loginRequest = new LoginRequest { Email = email, Password = password };
+        var response = await Http.PostAsJsonAsync("api/login", loginRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            user = await response.Content.ReadFromJsonAsync<User>();
+            Console.WriteLine("✅ Login Successful!");
+            await Storage.SetAsync("UserId", user.UserId);
+            Navigation.NavigateTo("/profile", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("❌ Login Failed!");
+            errorMessage = "אימייל או סיסמה שגויים!";
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async void Logout()
+    {
+        user = null;
+        await Storage.DeleteAsync("UserId");
+        Navigation.NavigateTo("/login", forceLoad: true);
+    }
+
+    public class LoginRequest
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}

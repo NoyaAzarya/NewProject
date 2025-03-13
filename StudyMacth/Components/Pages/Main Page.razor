@@ -1,0 +1,101 @@
+﻿@page "/main"
+@layout MainLayout
+
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <header class="header-container">
+        <div class="text-center">
+            <h1>ברוכים הבאים ל-StudyMatch</h1>
+            <p class="lead">מצאו את שותף הלמידה המושלם ולמדו יחד!</p>
+            <a href="/register" class="btn btn-light btn-lg">התחל עכשיו</a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="my-5 about-section">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold text-primary">מה זה StudyMatch?</h2>
+                <p class="lead">
+                    StudyMatch היא פלטפורמה המחברת בין סטודנטים שזקוקים לעזרה לבין אלו שמוכנים ללמד.
+                    זהו מערכת למציאת שותף ללמידה, המאפשרת לסטודנטים ללמוד יחד בקלות ובנוחות.
+                </p>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="https://via.placeholder.com/500" alt="קבוצת לימוד" class="img-fluid">
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="bg-light py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold text-primary">איך זה עובד?</h2>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>1. הירשמו</h3>
+                        <p>צרו חשבון והגדירו את הפרופיל שלכם בלחיצת כפתור.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>2. מצאו שותף</h3>
+                        <p>חפשו סטודנטים שיכולים לעזור או צריכים עזרה.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>3. התחילו ללמוד</h3>
+                        <p>התחברו עם שותף מתאים והתחילו ללמוד יחד בהצלחה.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* 🔹 General Page Styles */
+    .container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        direction: rtl;
+        text-align: right;
+    }
+
+    /* 🔹 Header */
+    .header-container {
+        background: linear-gradient(to right, #007bff, #00c6ff);
+        padding: 80px 20px;
+        color: white;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    .header-container h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    /* 🔹 Feature Boxes */
+    .feature-box {
+        padding: 30px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .feature-box:hover {
+        transform: translateY(-5px);
+    }
+
+    /* 🔹 Footer */
+    .footer {
+        background: #343a40;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 1rem;
+    }
+</style>

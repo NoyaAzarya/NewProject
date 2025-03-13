@@ -1,0 +1,92 @@
+﻿@inherits LayoutComponentBase <div class="layout-container"> <NavMenu /> <!-- Sidebar -->
+<div class="content-wrapper"> <header class="top-row"> <h2>StudyMatch</h2> </header> <div class="page-content"> @Body <!-- This ensures page content loads correctly -->
+</div> </div> </div> <style>
+/* 🔹 Layout Wrapper */
+.layout-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100vw; /* Ensure full width */
+}
+
+/* 🔹 Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    width: 250px;
+    min-width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 1rem;
+}
+
+/* 🔹 Content Wrapper */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+/* 🔹 Top Header */
+.top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    width: calc(100% - 250px);
+    left: 250px;
+    top: 0;
+    z-index: 1000;
+}
+
+/* 🔹 Page Content */
+.page-content {
+    flex-grow: 1;
+    padding: 40px;
+    max-width: 1000px;
+    margin: auto;
+    margin-top: 4rem;
+}
+
+/* 🔹 Responsive Fixes */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        min-width: 200px;
+    }
+
+    .top-row {
+        width: calc(100% - 200px);
+        left: 200px;
+    }
+
+    .content-wrapper {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 0; /* Hide sidebar on small screens */
+        min-width: 0;
+    }
+
+    .top-row {
+        width: 100%;
+        left: 0;
+    }
+
+    .content-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+</style >

@@ -1,0 +1,61 @@
+﻿@page "/settings"
+@layout MainLayout
+
+<div class="container settings-container mt-5">
+    <h2 class="fw-bold text-primary">הגדרות</h2>
+    <form>
+        <div class="mb-3">
+            <label class="form-label">שם משתמש</label>
+            <input type="text" class="form-control" placeholder="שם המשתמש שלך">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">אימייל</label>
+            <input type="email" class="form-control" placeholder="האימייל שלך">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">שפה</label>
+            <select class="form-control">
+                <option>עברית</option>
+                <option>English</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">התראות</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="emailNotifications">
+                <label class="form-check-label" for="emailNotifications">קבלת התראות באימייל</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="smsNotifications">
+                <label class="form-check-label" for="smsNotifications">קבלת התראות SMS</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">שמור שינויים</button>
+    </form>
+</div>
+
+<style>
+    .settings-container {
+        max-width: 600px;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        border: none;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .btn-primary:hover {
+        background: #0056b3;
+    }
+</style>
